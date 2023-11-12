@@ -3,6 +3,9 @@
 #include <fstream>
 #include <cstdlib>
 #include "timer.hpp"
+#include <chrono>
+#include <thread>
+#include <ncurses.h>
 
 using namespace std;
 
@@ -124,56 +127,97 @@ void timer::getStatistics()
 {
   cout << sessionsCompleted << endl;
   cout << totalWorkTime << endl;
+
+  cout << "Press b to return to menu." << endl;
+  string a;
+  cin >> a;
+  while(a != "b" && a != "B")
+  {
+      cout << "Invalid input, try again." << endl;
+      cin >> a;
+  }
+  menouepilogis();
 }
 
 void timer::workcounting()
 {
- int seconds = 0;
+    initscr(); // Initialize ncurses
+    cbreak(); // Line buffering disabled, Pass on everything to me
+    noecho(); // Don't echo any keypresses
+    keypad(stdscr, TRUE); // Enable the keypad
+    nodelay(stdscr, TRUE); // Set getch() to non-blocking mode
+  int seconds = 0;
   int lepta = workdur;
-  clearscreen();
+  bool paused = false;
   cout << "Work Time Remaining: " << endl;
   while(seconds >= 0 && lepta >= 0)
      { 
-       printf("\r%02d:%02d", lepta, seconds);
-       cout.flush();
-      // sleep(1);
-       if(seconds == 0) 
-          {
-            lepta--;
-            seconds = 59;
-          } 
-        else 
-          {
-            seconds--; 
-          }
+      int ch = getch();
+        if (ch == 'p') {
+            paused = !paused; // Toggle pause/unpause with the 'p' key
+        }
+
+       if (!paused) {
+            printw("\r        ");
+            printw("\r%02d:%02d", lepta, seconds);
+            refresh();
+
+            if (seconds == 0) {
+                lepta--;
+                seconds = 59;
+            } else {
+                seconds--;
+            }
+
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        } else {
+            printw("\rPAUSED  ");
+            refresh();
+        }
      }
+     endwin();
   cout << endl << "End of work session." << endl;
   sessionsCompleted++;
   sleep(1.4);
-   clearscreen();
-   sleep(3);
 }
 
 void timer::breakcounting()
 {
+  initscr(); // Initialize ncurses
+    cbreak(); // Line buffering disabled, Pass on everything to me
+    noecho(); // Don't echo any keypresses
+    keypad(stdscr, TRUE); // Enable the keypad
+    nodelay(stdscr, TRUE); // Set getch() to non-blocking mode
+
   int seconds = 0;
   cout << "Break Time Remaining:" << endl;
-   
+   bool paused = false;
    while(seconds >= 0 && breakdur >= 0)
        { 
-          printf("\r%02d:%02d", breakdur, seconds);
-          //sleep(1);
-          if (seconds == 0) 
-            {
-              breakdur--;
-              seconds = 59;
-            } 
-          else 
-            {
-              seconds--;
-            }
+        int ch = getch();
+        if (ch == 'p') {
+            paused = !paused; // Toggle pause/unpause with the 'p' key
         }
-  clearscreen();
+
+         if (!paused) {
+            printw("\r        ");
+            printw("\r%02d:%02d", breakdur, seconds);
+            refresh();
+
+            if (seconds == 0) {
+                breakdur--;
+                seconds = 59;
+            } else {
+                seconds--;
+            }
+
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        } else {
+            printw("\rPAUSED  ");
+            refresh();
+        }
+        }
+        endwin();
   cout << "End of break session." << endl;
   menouepilogis();
 }
