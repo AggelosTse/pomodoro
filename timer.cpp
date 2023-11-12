@@ -70,6 +70,45 @@ void timer::menouepilogis()
     {
         startsession();
     }
+    else if(answer == "2")
+    {
+        cout << "Press 1 to change work duration only." << endl;
+        cout << "Press 2 to change break duration only." << endl;
+        cout << "Press 3 to change both work and break duration." << endl;
+        string s;
+        cin >> s;
+        while(s != "1" && s != "2" && s != "3")
+        {
+          cout << "Invalid inpput, try again" << endl;
+          cin >> s;
+        }
+        if(s == "1")
+        {
+          getworkdur();
+          startsession();
+        }
+        else if(s == "2")
+        {
+          getbreakdur();
+          startsession();
+        }
+        else
+        {
+          getworkdur();
+          getbreakdur();
+          startsession();
+        }
+    }
+    else if(answer == "3")
+    {
+      getStatistics();
+    }
+    else
+    {
+      endsession();
+      cout << "Thanks for using this app." << endl;
+      return;
+    }
 }
 
 void timer::clearscreen()
@@ -136,6 +175,7 @@ void timer::breakcounting()
         }
   clearscreen();
   cout << "End of break session." << endl;
+  menouepilogis();
 }
 
 void timer::startsession()
