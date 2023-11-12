@@ -1,16 +1,23 @@
+#include <string>
+
 using namespace std;
+
 class timer
 {
     public:
     timer(int x,int y,int z,int s);
-    void set_work(int wd);
-    void set_break(int bd);
+    void menouepilogis();
+
+    private:
     void startsession();
     void endsession(); 
     void clearscreen();
-    string menouepilogis();
     void getStatistics();
-    
+    void getworkdur();
+    void getbreakdur();
+    void workcounting();
+    void breakcounting();
+
     private:
     int workdur,breakdur,sessionsCompleted,totalWorkTime;
 };

@@ -6,6 +6,45 @@
 
 using namespace std;
 
+void timer::getworkdur()
+{
+  int lepta;
+  cout << "How many minutes of work do you want?" << endl;
+  cin >> lepta;
+  while(lepta <= 0 || lepta > 59)
+     {
+      if(lepta > 59)
+      {
+        cout << "Invalid input, give a work duration less than 59" << endl;
+      }
+      else if(lepta <= 0)
+      {
+        cout << "Invalid input, give a work duration more than 0" << endl;
+      }
+       cin >> lepta;
+     }
+  workdur = lepta;
+}
+
+void timer::getbreakdur()
+{
+  int lepta;
+  cout << "How many minutes of break do you want?" << endl;
+  cin >> lepta;
+  while(lepta <= 0 || lepta > 59)
+     {
+       if(lepta > 59)
+      {
+        cout << "Invalid input, give a work duration less than 59" << endl;
+      }
+      else if(lepta <= 0)
+      {
+        cout << "Invalid input, give a work duration more than 0" << endl;
+      }
+       cin >> lepta;
+     }
+  breakdur = lepta;
+}
 timer::timer(int x,int y,int z,int s)
 {
   workdur = x;
@@ -13,23 +52,24 @@ timer::timer(int x,int y,int z,int s)
   sessionsCompleted = z;
   totalWorkTime = s;
 }
-string timer::menouepilogis()
+void timer::menouepilogis()
 {
     string answer;
-    cout << "Press 1 to change working duration. Default working duration: 25 minutes."<< endl;
-    cout << "Press 2 to change break duration. Default break duration: 5 minutes." << endl;
-    cout << "Press 3 to start with default settings. (Work:25 minutes, Break: 5 minutes)" << endl;
-    cout << "Press 4 to change both working duration and break duration." << endl;
-    cout << "Press 5 to display statistics." << endl;
-    cout << "Press 6 to exit the program." << endl;
+    cout << "Press 1 to start with the default settings." << endl;
+    cout << "Press 2 to open duration settings." << endl;
+    cout << "Press 3 to print statistics." << endl;
+    cout << "Press 4 to exit the program" << endl;
     
     cin >> answer;
-    while(answer != "1" && answer != "2" && answer != "3" && answer != "4" && answer != "5" && answer != "6")
+    while(answer != "1" && answer != "2" && answer != "3" && answer != "4")
       {
           cout << "Invalid input. Try Again" << endl;
           cin >> answer;
       }
-    return answer;
+    if(answer == "1")
+    {
+        startsession();
+    }
 }
 
 void timer::clearscreen()
@@ -41,43 +81,21 @@ void timer::clearscreen()
   #endif
 }
 
-void timer::set_work(int wd)
-{
-    workdur = wd;
-}
-
-void timer::set_break(int bd)
-{
-    breakdur = bd;
-}
-
 void timer::getStatistics()
 {
   cout << sessionsCompleted << endl;
   cout << totalWorkTime << endl;
 }
 
-void timer::startsession()
+void timer::workcounting()
 {
-  ifstream destfile("Statistics.txt");
-  if(!destfile.is_open())
-  {
-    cout << "There was a problem opening this text file." << endl;
-    return;
-  }
-  destfile >> sessionsCompleted >> totalWorkTime; 
-  destfile.close();
-  cout << workdur << endl;
-  cout << totalWorkTime << endl;
-  
-  totalWorkTime = totalWorkTime + workdur;
-  int seconds = 0;
+ int seconds = 0;
   int lepta = workdur;
   clearscreen();
   cout << "Work Time Remaining: " << endl;
   while(seconds >= 0 && lepta >= 0)
      { 
-       cout<< "\r" << (lepta < 10 ? "0" : "") << lepta << ":" << (seconds < 10 ? "0" : "") << seconds;
+       printf("\r%02d:%02d", lepta, seconds);
        cout.flush();
       // sleep(1);
        if(seconds == 0) 
@@ -95,11 +113,16 @@ void timer::startsession()
   sleep(1.4);
    clearscreen();
    sleep(3);
-   cout << "Break Time Remaining:" << endl;
+}
+
+void timer::breakcounting()
+{
+  int seconds = 0;
+  cout << "Break Time Remaining:" << endl;
    
    while(seconds >= 0 && breakdur >= 0)
        { 
-          cout << "\r" << (breakdur < 10 ? "0" : "") << breakdur << ":" << (seconds < 10 ? "0" : "") << seconds;
+          printf("\r%02d:%02d", breakdur, seconds);
           //sleep(1);
           if (seconds == 0) 
             {
@@ -113,6 +136,25 @@ void timer::startsession()
         }
   clearscreen();
   cout << "End of break session." << endl;
+}
+
+void timer::startsession()
+{
+  ifstream destfile("Statistics.txt");
+  if(!destfile.is_open())
+  {
+    cout << "There was a problem opening this text file." << endl;
+    return;
+  }
+  destfile >> sessionsCompleted >> totalWorkTime; 
+  destfile.close();
+  cout << workdur << endl;
+  cout << totalWorkTime << endl;
+  
+  totalWorkTime = totalWorkTime + workdur;
+
+  workcounting();
+  breakcounting();
 }
 
 void timer::endsession()
