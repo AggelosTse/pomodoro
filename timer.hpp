@@ -17,7 +17,7 @@ class timer
     void getbreakdur();
     void workcounting();
     void breakcounting();
-    bool checkifnumber(string n);
+    
 
     private:
     int workdur,breakdur,sessionsCompleted,totalWorkTime;
