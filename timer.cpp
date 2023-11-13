@@ -6,27 +6,31 @@
 #include <chrono>
 #include <thread>
 #include <ncurses.h>
+#include <string>
 
 using namespace std;
 
+bool timer::checkifnumber(string n)
+{
+    for (char c : n) {
+        if (!isdigit(c)) {
+            return false;
+        }
+}
+return true;
+}
+
 void timer::getworkdur()
 {
-  int lepta;
+  string lepta;
   cout << "How many minutes of work do you want?" << endl;
   cin >> lepta;
-  while(lepta <= 0 || lepta > 59)
+  while((lepta <= "1" || lepta > "59") && (!checkifnumber(lepta)))
      {
-      if(lepta > 59)
-      {
-        cout << "Invalid input, give a work duration less than 59" << endl;
-      }
-      else if(lepta <= 0)
-      {
-        cout << "Invalid input, give a work duration more than 0" << endl;
-      }
-       cin >> lepta;
+      cout << "Invalid Input, try again." << endl;
+      cin >> lepta;
      }
-  workdur = lepta;
+  workdur = stoi(lepta);
 }
 
 void timer::getbreakdur()
