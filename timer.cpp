@@ -11,35 +11,6 @@
 
 using namespace std;
 
-void timer::getworkdur()
-{
-  int lepta;
-  cout << "How many minutes of work do you want?" << endl;
-  cin >> lepta;
-  while(lepta < 1 || lepta > 59)
-     {
-      cin.clear();
-      cin.ignore(numeric_limits<streamsize>::max(), '\n');
-      cout << "Invalid Input, try again." << endl;
-      cin >> lepta;
-     }
-  workdur = lepta;
-}
-
-void timer::getbreakdur()
-{
-  int lepta;
-  cout << "How many minutes of break do you want?" << endl;
-  cin >> lepta;
-  while(lepta < 1 || lepta > 59)
-     {
-      cin.clear();
-      cin.ignore(numeric_limits<streamsize>::max(), '\n');
-      cout << "Invalid Input, try again." << endl;
-      cin >> lepta;
-     }
-  breakdur = lepta;
-}
 
 timer::timer(int x,int y,int z,int s)
 {
@@ -47,19 +18,29 @@ timer::timer(int x,int y,int z,int s)
   breakdur = y;
   sessionsCompleted = z;
   totalWorkTime = s;
+
+  initscr(); // Initialize ncurses
+  
+
 }
+timer::~timer()
+{
+  endwin();
+}
+
+
 void timer::menouepilogis()
 {
     string answer;
-    cout << "Press 1 to start with the default settings." << endl;
-    cout << "Press 2 to open duration settings." << endl;
-    cout << "Press 3 to print statistics." << endl;
-    cout << "Press 4 to exit the program" << endl;
+    printw("Press 1 to start with the default settings. \n");
+    printw("Press 2 to open duration settings. \n");
+    printw("Press 3 to print statistics. \n");
+    printw("Press 4 to exit the program \n");
     
     cin >> answer;
     while(answer != "1" && answer != "2" && answer != "3" && answer != "4")
       {
-          cout << "Invalid input. Try Again" << endl;
+          printw("Invalid input. Try Again \n");
           cin >> answer;
       }
     if(answer == "1")
@@ -68,14 +49,16 @@ void timer::menouepilogis()
     }
     else if(answer == "2")
     {
-        cout << "Press 1 to change work duration only." << endl;
-        cout << "Press 2 to change break duration only." << endl;
-        cout << "Press 3 to change both work and break duration." << endl;
+        clearscreen();
+        printw("Press 1 to change work duration only. \n");
+        printw("Press 2 to change break duration only. \n");
+        printw("Press 3 to change both work and break duration. \n");
         string s;
         cin >> s;
         while(s != "1" && s != "2" && s != "3")
         {
-          cout << "Invalid inpput, try again" << endl;
+          clearscreen();
+          printw("Invalid inpput, try again \n");
           cin >> s;
         }
         if(s == "1")
@@ -97,15 +80,54 @@ void timer::menouepilogis()
     }
     else if(answer == "3")
     {
+      clearscreen();
       getStatistics();
     }
     else
     {
+      clearscreen();
       endsession();
-      cout << "Thanks for using this app." << endl;
+      printw("Thanks for using this app. \n");
       return;
     }
 }
+
+
+void timer::getworkdur()
+{
+  clearscreen();
+  int lepta;
+  printw("How many minutes of work do you want? \n");
+  cin >> lepta;
+  while(lepta < 1 || lepta > 59)
+     {
+      cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+      printw("Invalid Input, try again. \n");
+      cin >> lepta;
+     }
+  workdur = lepta;
+  clearscreen();
+}
+
+
+void timer::getbreakdur()
+{
+  clearscreen();
+  int lepta;
+  printw("How many minutes of break do you want? \n");
+  cin >> lepta;
+  while(lepta < 1 || lepta > 59)
+     {
+      cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+      printw("Invalid Input, try again. \n");
+      cin >> lepta;
+     }
+  breakdur = lepta;
+  clearscreen();
+}
+
 
 void timer::clearscreen()
 {
@@ -116,33 +138,33 @@ void timer::clearscreen()
   #endif
 }
 
+
 void timer::getStatistics()
 {
-  cout << sessionsCompleted << endl;
-  cout << totalWorkTime << endl;
+  
+  printw("%d \n", workdur);
+  printw("%d \n", totalWorkTime);
 
-  cout << "Press b to return to menu." << endl;
+  printw("Press b to return to menu. \n");
   string a;
   cin >> a;
   while(a != "b" && a != "B")
   {
-      cout << "Invalid input, try again." << endl;
+      printw("Invalid input, try again. \n");
       cin >> a;
   }
+  clearscreen();
   menouepilogis();
 }
 
+
 void timer::workcounting()
 {
-    initscr(); // Initialize ncurses
-    cbreak(); // Line buffering disabled, Pass on everything to me
-    noecho(); // Don't echo any keypresses
-    keypad(stdscr, TRUE); // Enable the keypad
-    nodelay(stdscr, TRUE); // Set getch() to non-blocking mode
+    
   int seconds = 0;
   int lepta = workdur;
   bool paused = false;
-  cout << "Work Time Remaining: " << endl;
+  printw("Work Time Remaining: \n\n");
   while(seconds >= 0 && lepta >= 0)
      { 
       int ch = getch();
@@ -168,22 +190,20 @@ void timer::workcounting()
             refresh();
         }
      }
-     endwin();
-  cout << endl << "End of work session." << endl;
+     
+  printw("End of work session.");
   sessionsCompleted++;
+  clearscreen();
   sleep(1.4);
+  breakcounting();
 }
+
 
 void timer::breakcounting()
 {
-  initscr(); // Initialize ncurses
-    cbreak(); // Line buffering disabled, Pass on everything to me
-    noecho(); // Don't echo any keypresses
-    keypad(stdscr, TRUE); // Enable the keypad
-    nodelay(stdscr, TRUE); // Set getch() to non-blocking mode
 
   int seconds = 0;
-  cout << "Break Time Remaining:" << endl;
+   printw("Break Time Remaining: \n\n");
    bool paused = false;
    while(seconds >= 0 && breakdur >= 0)
        { 
@@ -210,39 +230,43 @@ void timer::breakcounting()
             refresh();
         }
         }
-        endwin();
-  cout << "End of break session." << endl;
+        
+  printw("End of break session.\n");
+  clearscreen();
   menouepilogis();
 }
 
+
 void timer::startsession()
 {
+  clearscreen();
   ifstream destfile("Statistics.txt");
   if(!destfile.is_open())
   {
-    cout << "There was a problem opening this text file." << endl;
+    printw("There was a problem opening this text file. \n");
     return;
   }
   destfile >> sessionsCompleted >> totalWorkTime; 
   destfile.close();
-  cout << workdur << endl;
-  cout << totalWorkTime << endl;
+  printw("%d \n", workdur);
+  printw("%d \n", totalWorkTime);
   
   totalWorkTime = totalWorkTime + workdur;
-
+  clearscreen();
   workcounting();
-  breakcounting();
 }
+
 
 void timer::endsession()
 { 
   ofstream destfile("Statistics.txt");
   if(!destfile.is_open())
   {
-    cout << "There was a problem opening this text file." << endl;
+    printw("There was a problem opening this text file. \n");
     return;
   }
   destfile << sessionsCompleted << endl;
   destfile << totalWorkTime;
   destfile.close();
+  clearscreen();
 }

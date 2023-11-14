@@ -6,7 +6,9 @@ class timer
 {
     public:
     timer(int x,int y,int z,int s);
+    ~timer();
     void menouepilogis();
+
 
     private:
     void startsession();
