@@ -1,7 +1,6 @@
 #include <unistd.h>
 #include <iostream>
 #include <fstream>
-#include <cstdlib>
 #include "timer.hpp"
 #include <chrono>
 #include <thread>
@@ -13,15 +12,18 @@ using namespace std;
 
 void timer::getworkdur()
 {
+  clearscreen();
   int lepta;
   cout << "How many minutes of work do you want?" << endl;
   cin >> lepta;
+  clearscreen();
   while(lepta < 1 || lepta > 59)
      {
       cin.clear();
       cin.ignore(numeric_limits<streamsize>::max(), '\n');
       cout << "Invalid Input, try again." << endl;
       cin >> lepta;
+      clearscreen();
      }
   workdur = lepta;
 }
@@ -31,12 +33,14 @@ void timer::getbreakdur()
   int lepta;
   cout << "How many minutes of break do you want?" << endl;
   cin >> lepta;
+  clearscreen();
   while(lepta < 1 || lepta > 59)
      {
       cin.clear();
       cin.ignore(numeric_limits<streamsize>::max(), '\n');
       cout << "Invalid Input, try again." << endl;
       cin >> lepta;
+      clearscreen();
      }
   breakdur = lepta;
 }
@@ -57,10 +61,12 @@ void timer::menouepilogis()
     cout << "Press 4 to exit the program" << endl;
     
     cin >> answer;
+    clearscreen();
     while(answer != "1" && answer != "2" && answer != "3" && answer != "4")
       {
           cout << "Invalid input. Try Again" << endl;
           cin >> answer;
+          clearscreen();
       }
       
     if(answer == "1")
@@ -74,25 +80,31 @@ void timer::menouepilogis()
         cout << "Press 3 to change both work and break duration." << endl;
         string s;
         cin >> s;
+        clearscreen();
         while(s != "1" && s != "2" && s != "3")
         {
           cout << "Invalid inpput, try again" << endl;
           cin >> s;
+          clearscreen();
         }
         if(s == "1")
         {
           getworkdur();
+          clearscreen();
           startsession();
         }
         else if(s == "2")
         {
           getbreakdur();
+          clearscreen();
           startsession();
         }
         else
         {
           getworkdur();
+          clearscreen();
           getbreakdur();
+          clearscreen();
           startsession();
         }
     }
@@ -130,6 +142,7 @@ void timer::getStatistics()
       cout << "Invalid input, try again." << endl;
       cin >> a;
   }
+  clearscreen();
   menouepilogis();
 }
 
@@ -232,6 +245,7 @@ void timer::startsession()
   totalWorkTime = totalWorkTime + workdur;
 
   workcounting();
+  clearscreen();
   breakcounting();
 }
 
