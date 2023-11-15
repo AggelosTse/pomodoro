@@ -16,14 +16,13 @@ void timer::getworkdur()
   int lepta;
   cout << "How many minutes of work do you want?" << endl;
   cin >> lepta;
-  clearscreen();
   while(lepta < 1 || lepta > 59)
      {
       cin.clear();
       cin.ignore(numeric_limits<streamsize>::max(), '\n');
       cout << "Invalid Input, try again." << endl;
       cin >> lepta;
-      clearscreen();
+      
      }
   workdur = lepta;
 }
@@ -33,7 +32,6 @@ void timer::getbreakdur()
   int lepta;
   cout << "How many minutes of break do you want?" << endl;
   cin >> lepta;
-  clearscreen();
   while(lepta < 1 || lepta > 59)
      {
       cin.clear();
@@ -61,33 +59,38 @@ void timer::menouepilogis()
     cout << "Press 4 to exit the program" << endl;
     
     cin >> answer;
-    clearscreen();
     while(answer != "1" && answer != "2" && answer != "3" && answer != "4")
       {
           cout << "Invalid input. Try Again" << endl;
           cin >> answer;
-          clearscreen();
       }
-      
+      clearscreen();
     if(answer == "1")
     {
         startsession();
     }
     else if(answer == "2")
     {
+        cout << "Press b to go back to menu" << endl << endl;
         cout << "Press 1 to change work duration only." << endl;
         cout << "Press 2 to change break duration only." << endl;
         cout << "Press 3 to change both work and break duration." << endl;
+        
+
         string s;
         cin >> s;
-        clearscreen();
-        while(s != "1" && s != "2" && s != "3")
+        while(s != "1" && s != "2" && s != "3" && s != "b" && s != "B")
         {
           cout << "Invalid inpput, try again" << endl;
           cin >> s;
-          clearscreen();
+          
         }
-        if(s == "1")
+        if(s == "b" || s == "B")
+        {
+          clearscreen();
+          menouepilogis();
+        }
+        else if(s == "1")
         {
           getworkdur();
           clearscreen();
@@ -114,6 +117,7 @@ void timer::menouepilogis()
     }
     else
     {
+      clearscreen();
       endsession();
       cout << "Thanks for using this app." << endl;
       return;
@@ -131,10 +135,9 @@ void timer::clearscreen()
 
 void timer::getStatistics()
 {
+  cout << "Press b to go back to menu" << endl << endl;
   cout << sessionsCompleted << endl;
   cout << totalWorkTime << endl;
-
-  cout << "Press b to return to menu." << endl;
   string a;
   cin >> a;
   while(a != "b" && a != "B")
@@ -183,9 +186,11 @@ void timer::workcounting()
         }
      }
      endwin();
-  cout << endl << "End of work session." << endl;
+     cout << "End of work session." << endl;
+  
   sessionsCompleted++;
   sleep(1.4);
+  breakcounting();
 }
 
 void timer::breakcounting()
@@ -224,8 +229,9 @@ void timer::breakcounting()
             refresh();
         }
         }
+         cout << "End of break session." << endl;
         endwin();
-  cout << "End of break session." << endl;
+ clearscreen();
   menouepilogis();
 }
 
@@ -239,14 +245,11 @@ void timer::startsession()
   }
   destfile >> sessionsCompleted >> totalWorkTime; 
   destfile.close();
-  cout << workdur << endl;
-  cout << totalWorkTime << endl;
   
   totalWorkTime = totalWorkTime + workdur;
 
   workcounting();
   clearscreen();
-  breakcounting();
 }
 
 void timer::endsession()
