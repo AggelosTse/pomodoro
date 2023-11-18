@@ -38,7 +38,6 @@ void timer::getbreakdur()
       cin.ignore(numeric_limits<streamsize>::max(), '\n');
       cout << "Invalid Input, try again." << endl;
       cin >> lepta;
-      clearscreen();
      }
   breakdur = lepta;
 }
@@ -115,10 +114,9 @@ void timer::menouepilogis()
     {
       getStatistics();
     }
-    else
+    else if(answer == "4")
     {
       clearscreen();
-      endsession();
       cout << "Thanks for using this app." << endl;
       return;
     }
@@ -232,6 +230,7 @@ void timer::breakcounting()
          cout << "End of break session." << endl;
         endwin();
  clearscreen();
+ endsession();
   menouepilogis();
 }
 
