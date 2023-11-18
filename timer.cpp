@@ -159,7 +159,7 @@ void timer::workcounting()
   int seconds = 0;
   int lepta = workdur;
   bool paused = false;
-  cout << "Work Time Remaining: " << endl;
+ printw("Work Time Remaining: \n\n");
   while(seconds >= 0 && lepta >= 0)
      { 
       int ch = getch();
@@ -200,9 +200,9 @@ void timer::breakcounting()
     noecho(); // Don't echo any keypresses
     keypad(stdscr, TRUE); // Enable the keypad
     nodelay(stdscr, TRUE); // Set getch() to non-blocking mode
-
+  clear();
   int seconds = 0;
-  cout << "Break Time Remaining:" << endl;
+  printw("Break Time Remaining: \n\n");
    bool paused = false;
    while(seconds >= 0 && breakdur >= 0)
        { 
