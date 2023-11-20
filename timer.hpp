@@ -1,9 +1,9 @@
 using namespace std;
-
 class timer
 {
     public:
     timer(int x,int y,int z,int s);  //im using these functions as public, because main has access to them.
+    ~timer();
     void menouepilogis();
 
     private:                    //these functions are private because they are used only within the class.

@@ -9,7 +9,7 @@
 #include <limits>   
 
 
-using namespace std;
+using std::cin,std::cout,std::endl,std::string;
 
 
 timer::timer(int x,int y,int z,int s)   //constructor function, when the object is created, it gives the starting values in the class member variables.
@@ -18,6 +18,10 @@ timer::timer(int x,int y,int z,int s)   //constructor function, when the object 
   breakdur = y;   //breakdur = 5
   sessionsCompleted = z;  //sessionscompleted = 0
   totalWorkTime = s;      //totalworktime = 0
+}
+timer::~timer()
+{
+
 }
 
 
@@ -140,18 +144,22 @@ void timer::startsession()  //startsession checks if a txt file named statistics
   totalWorkTime = totalWorkTime + workdur;            //adds up the work time user chose.
 
   workcounting();   //starts session.
-  clearscreen();    //clears old data from the screen.
+  
 }
 
 
 void timer::workcounting()
 {
     initscr(); // Initialize ncurses
+    cbreak(); // Line buffering disabled
+    noecho(); // Don't echo any keypresses
+    keypad(stdscr, TRUE); // Enable the keypad
+    nodelay(stdscr, TRUE); 
   int seconds = 0;
   int lepta = workdur;      //copies the workdur variable in another, so that i can make changes to it for the timer.
   bool paused = false;
  printw("Work Time Remaining: \n\n");
-  while(seconds >= 0 && lepta >= 0)
+  while(lepta >= 0)
      { 
       int ch = getch();
         if (ch == 'p') {
@@ -171,8 +179,10 @@ void timer::workcounting()
             }
 
             std::this_thread::sleep_for(std::chrono::seconds(1));   //waits for 1 second until it loops again.
-        } else {
-            printw("\rPAUSED  ");   //displays "PAUSED" until the user presses p again.
+        } 
+        else 
+        {
+            printw("\rPAUSED");   //displays "PAUSED" until the user presses p again.
             refresh();
         }
      }
@@ -187,6 +197,10 @@ void timer::workcounting()
 void timer::breakcounting()
 {
   initscr();       // Initialize ncurses.
+  cbreak(); // Line buffering disabled
+  noecho(); // Don't echo any keypresses
+  keypad(stdscr, TRUE); // Enable the keypad
+  nodelay(stdscr, TRUE); 
   clear();         // clear old data from ncurses.
   int seconds = 0;
   printw("Break Time Remaining: \n\n");
