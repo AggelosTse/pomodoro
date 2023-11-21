@@ -13,7 +13,7 @@ class timer
     void getStatistics();
     void getworkdur();
     void getbreakdur();                                                         
-    void workcounting();
+    void workcounting(); 
     void breakcounting();
     int workdur,breakdur,sessionsCompleted,totalWorkTime;  //class variables are also private for better encapsulation.
 };
