@@ -19,10 +19,8 @@ timer::timer(int x,int y,int z,int s)   //constructor function, when the object 
   sessionsCompleted = z;  //sessionscompleted = 0
   totalWorkTime = s;      //totalworktime = 0
 }
-timer::~timer()
-{
 
-}
+timer::~timer() {}   //destroys the object after the work is done.
 
 
 void timer::menouepilogis()  //this function, is the "hub" of the program. It controls all the functions,
@@ -164,6 +162,7 @@ void timer::workcounting()
       int ch = getch();
         if (ch == 'p') {
             paused = !paused; //pause/unpause with the 'p' key.
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));  //delay a bit to reduce cpu usage.
         }
 
        if (!paused) {
@@ -184,6 +183,7 @@ void timer::workcounting()
         {
             printw("\rPAUSED");   //displays "PAUSED" until the user presses p again.
             refresh();
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));  //delay a bit to reduce cpu usage.
         }
      }
      endwin();                    //closes ncurses.
@@ -210,6 +210,7 @@ void timer::breakcounting()
         int ch = getch();
         if (ch == 'p') {
             paused = !paused; // you can pause/unpause with the 'p' key.
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));  //delay to reduce cpu usage.
         }
 
          if (!paused) {
@@ -228,6 +229,7 @@ void timer::breakcounting()
         } else {
             printw("\rPAUSED  ");
             refresh();
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));  //delay to reduce cpu usage.
         }
         }
          cout << "End of break session." << endl;
