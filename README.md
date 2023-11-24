@@ -2,13 +2,13 @@
 
 -A pomodoro application created for DIT UOI (Department of Informatics and Telecommunications, University of Ioannina) as a project.
 
-## Features
+# Features
 
 -Set custom durations for Pomodoro sessions, or work with the default ones.
 -View session statistics, which are saved in a `statistics.txt` file.
 -Pause/Unpause anytime you want.
 
-## Instructions
+# Instructions
 
 1)Clone the repository with this command:
   git clone https://github.com/AggelosTse/pomodoro.git
