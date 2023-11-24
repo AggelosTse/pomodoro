@@ -14,7 +14,7 @@
 
 1)Clone the repository with this command:
 
-  git clone https://github.com/AggelosTse/pomodoro.git
+  'git clone https://github.com/AggelosTse/pomodoro.git'
   
 2)navigate into the project's directory:
 
