@@ -5,7 +5,9 @@
 # Features
 
 -Set custom durations for Pomodoro sessions, or work with the default ones.
+
 -View session statistics, which are saved in a `statistics.txt` file.
+
 -Pause/Unpause anytime you want.
 
 # Instructions
