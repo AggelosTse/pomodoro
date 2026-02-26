@@ -1,16 +1,22 @@
-# Pomodoro
+# Pomodoro CLI App (c++)
 
--A pomodoro application created for DIT UOI (Department of Informatics and Telecommunications, University of Ioannina) as a project.
+A lightweight, **Terminal-Based** productivity timer developed as a project for the **Department of Informatics and Telecommunications (DIT), University of Ioannina**. 
 
-# Features
+This is a pure Command Line Interface (CLI) application designed for developers and students who prefer staying in the terminal while working.
 
--Set custom durations for Pomodoro sessions, or work with the default ones.
+---
 
--View session statistics, which are saved in a `statistics.txt` file.
+## Terminal Features
 
--Pause/Unpause anytime you want.
+* **CLI Timer:** A real-time countdown clock rendered directly in your terminal.
+* **Custom Durations:** Configure your work/break intervals via terminal prompts.
+* **Persistent Logs:** Automated session tracking saved to `statistics.txt`.
+* **Flow Control:** Support for **Pause/Unpause** functionality during active sessions.
+* **Zero Dependencies:** Pure C++ logic—no heavy GUI libraries required.
 
-# Instructions
+---
+
+## Installation & Compilation
 
 1)Clone the repository with this command:
 
